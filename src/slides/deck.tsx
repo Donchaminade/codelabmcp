@@ -29,33 +29,56 @@ import {
   VERSIONS,
 } from "./outputs";
 
+export type SlideLayout = "cover" | "section" | "content" | "closing";
+
 export type Slide = {
   section: string;
   title: string;
-  content: ReactNode;
+  content?: ReactNode;
+  layout: SlideLayout;
+  number?: string;
+  subtitle?: string;
 };
 
 function slide(section: string, title: string, content: ReactNode): Slide {
-  return { section, title, content };
+  return { section, title, content, layout: "content" };
+}
+
+function divider(section: string, number: string, title: string, subtitle: string): Slide {
+  return { section, title, number, subtitle, layout: "section" };
+}
+
+function Pair({ children, wide = false }: { children: ReactNode; wide?: boolean }) {
+  return (
+    <div className={`grid gap-4 ${wide ? "xl:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)]" : "xl:grid-cols-2"}`}>
+      {children}
+    </div>
+  );
 }
 
 export const slides: Slide[] = [
-  slide(
-    "Ouverture",
-    "Crée ton propre serveur MCP",
-    <Stack>
-      <p className="max-w-4xl text-[1.45rem] leading-snug md:text-[2rem]">
-        Branche un outil réel à l'agent de Cursor. Aujourd'hui, il répond avec la météo de Lomé, pas avec une estimation.
-      </p>
-      <p className="text-[1.25rem] text-muted md:text-[1.5rem]">
-        Communauté tech de Lomé · environ 2 heures · débutants inclus
-      </p>
-      <p className="font-display text-[1.35rem]">Chaminade Adjolou (Donchaminade)</p>
-      <Note>
-        Flèches ou Espace pour avancer. Glisser horizontalement sur mobile. S ouvre le sommaire, T le thème, F le plein écran. L'adresse se termine par # et le numéro de slide.
-      </Note>
-    </Stack>,
-  ),
+  {
+    section: "Ouverture",
+    title: "Crée ton propre serveur MCP",
+    layout: "cover",
+    subtitle: "et branche-le à Cursor",
+    content: (
+      <Stack>
+        <p className="max-w-3xl text-[1.3rem] leading-snug md:text-[clamp(1.4rem,1.8vw,2.1rem)]">
+          Branche un outil réel à l'agent de Cursor. Aujourd'hui, il répond avec la météo de Lomé, pas avec une estimation.
+        </p>
+        <p className="text-[1.15rem] text-muted md:text-[1.4rem]">
+          Communauté tech de Lomé · environ 2 heures · débutants inclus
+        </p>
+        <p className="font-display text-[1.35rem] md:text-[1.6rem]">
+          Chaminade Adjolou <span className="text-accent">(Donchaminade)</span>
+        </p>
+        <p className="max-w-3xl text-[1rem] text-muted md:text-[1.1rem]">
+          Flèches ou Espace pour avancer · glisser sur mobile · S sommaire · T thème · F plein écran
+        </p>
+      </Stack>
+    ),
+  },
   slide(
     "Ouverture",
     "Deux heures, débutants inclus",
@@ -70,6 +93,12 @@ export const slides: Slide[] = [
       />
       <Note>Aucune clé API. Rien à payer. Le serveur reste sur ta machine.</Note>
     </Stack>,
+  ),
+  divider(
+    "Théorie",
+    "01",
+    "Partie 1 — Comprendre MCP",
+    "Un modèle qui agit, le protocole, Cursor, et ce qu'il ne faut pas exposer.",
   ),
   slide(
     "Théorie",
@@ -258,6 +287,12 @@ export const slides: Slide[] = [
       ]}
     />,
   ),
+  divider(
+    "Outils",
+    "02",
+    "La boîte à outils",
+    "Tout ce qui sert pendant la pratique, avec son rôle et son lien officiel.",
+  ),
   slide(
     "Outils",
     "Outils, librairies et API utilisés",
@@ -360,6 +395,12 @@ export const slides: Slide[] = [
       ]}
     />,
   ),
+  divider(
+    "Pratique",
+    "03",
+    "Partie 2 — Construire le serveur",
+    "De mkdir à l'agent de Cursor, avec les commandes et les sorties réelles.",
+  ),
   slide(
     "Pratique",
     "Vérifier la machine",
@@ -371,16 +412,20 @@ export const slides: Slide[] = [
           `Sur la machine de ce dépôt : Node ${VERSIONS.node}, npm ${VERSIONS.npm}.`,
         ]}
       />
-      <CodeBlock code={CMD_CHECK} filename="terminal" language="bash" />
-      <CodeBlock code={OUT_CHECK} filename="sortie du 19 octobre 2026" language="text" />
+      <Pair>
+        <CodeBlock code={CMD_CHECK} filename="terminal" language="bash" />
+        <CodeBlock code={OUT_CHECK} filename="sortie du 19 octobre 2026" language="text" />
+      </Pair>
     </Stack>,
   ),
   slide(
     "Pratique",
     "Créer le projet",
     <Stack>
-      <CodeBlock code={CMD_INIT} filename="terminal" language="bash" />
-      <CodeBlock code={OUT_INSTALL} filename="versions résolues" language="text" />
+      <Pair>
+        <CodeBlock code={CMD_INIT} filename="terminal" language="bash" />
+        <CodeBlock code={OUT_INSTALL} filename="versions résolues" language="text" />
+      </Pair>
       <Note>
         Les deux premières lignes sont la sortie npm. Les versions sont celles des paquets installés le 19 octobre 2026. npm init -y écrit un package.json minimal : on le complète ensuite, sans effacer dependencies.
       </Note>
@@ -412,12 +457,16 @@ export const slides: Slide[] = [
   slide(
     "Pratique",
     "src/index.ts",
-    <Stack>
-      <Note>
-        Fichier complet du dépôt. Lomé est fixée : 6.1319, 1.2228. Zod contrôle la réponse météo et le seuil de pluie.
-      </Note>
+    <Pair wide>
+      <Stack>
+        <Note>
+          Fichier complet du dépôt. Lomé est fixée : 6.1319, 1.2228. Zod contrôle la réponse météo et le seuil de pluie.
+        </Note>
+        <Note>Deux outils : meteo_lome sans argument, risque_pluie avec un seuil optionnel.</Note>
+        <Note>Les logs passent par console.error. Jamais console.log.</Note>
+      </Stack>
       <CodeBlock code={serverSource} filename="src/index.ts" language="typescript" />
-    </Stack>,
+    </Pair>,
   ),
   slide(
     "Pratique",
@@ -438,8 +487,10 @@ export const slides: Slide[] = [
     "Pratique",
     "Compiler, puis démarrer",
     <Stack>
-      <CodeBlock code={`${CMD_BUILD}\n\n${OUT_BUILD}`} filename="terminal" language="text" />
-      <CodeBlock code={CMD_START} filename="terminal" language="bash" />
+      <Pair>
+        <CodeBlock code={`${CMD_BUILD}\n\n${OUT_BUILD}`} filename="terminal" language="text" />
+        <CodeBlock code={`${CMD_START}\n\n${OUT_START}`} filename="terminal · stderr" language="text" />
+      </Pair>
       <Note>
         npm start lance node build/index.js. Stdout reste vide. Le processus attend tant que stdin est ouvert. Ctrl+C pour quitter. Vérifié le 19 octobre 2026 : tsc se termine sans erreur.
       </Note>
@@ -460,10 +511,16 @@ export const slides: Slide[] = [
     "Pratique",
     "La réponse réelle d'Open-Meteo",
     <Stack>
-      <CodeBlock code={CMD_METEO} filename="terminal" language="bash" />
-      <CodeBlock code={OUT_METEO} filename="meteo_lome · 19 octobre 2026, 09:30 UTC" language="text" />
-      <CodeBlock code={CMD_PLUIE} filename="terminal" language="bash" />
-      <CodeBlock code={OUT_PLUIE} filename="risque_pluie · seuil 5 mm/h" language="text" />
+      <Pair>
+        <Stack>
+          <CodeBlock code={CMD_METEO} filename="terminal" language="bash" />
+          <CodeBlock code={OUT_METEO} filename="meteo_lome · 19 octobre 2026, 09:30 UTC" language="text" />
+        </Stack>
+        <Stack>
+          <CodeBlock code={CMD_PLUIE} filename="terminal" language="bash" />
+          <CodeBlock code={OUT_PLUIE} filename="risque_pluie · seuil 5 mm/h" language="text" />
+        </Stack>
+      </Pair>
       <Note>Les chiffres changent dans la journée. La forme du texte, non.</Note>
     </Stack>,
   ),
@@ -471,8 +528,10 @@ export const slides: Slide[] = [
     "Pratique",
     "Zod arrête un mauvais seuil",
     <Stack>
-      <CodeBlock code={CMD_ZOD} filename="terminal" language="bash" />
-      <CodeBlock code={OUT_ZOD} filename="risque_pluie · seuil_mm=-3" language="text" />
+      <Pair>
+        <CodeBlock code={CMD_ZOD} filename="terminal" language="bash" />
+        <CodeBlock code={OUT_ZOD} filename="risque_pluie · seuil_mm=-3" language="text" />
+      </Pair>
       <Note>
         Le handler n'est pas appelé. Un appel sans seuil utilise 5 mm/h, le défaut du code. Le dépôt rejoue les mêmes appels avec npm test.
       </Note>
@@ -485,9 +544,13 @@ export const slides: Slide[] = [
       <Note>
         Ouvre le dossier example-server pour que ${"{workspaceFolder}"} pointe vers build/index.js. Compile avant d'activer.
       </Note>
-      <CodeBlock code={mcpJson} filename=".cursor/mcp.json" language="json" />
-      <p className="text-[1.2rem]">Variante avec tsx, sans build. Elle n'a pas servi au test Inspector.</p>
-      <CodeBlock code={MCP_TSX} filename=".cursor/mcp.json · variante" language="json" />
+      <Pair>
+        <CodeBlock code={mcpJson} filename=".cursor/mcp.json" language="json" />
+        <Stack>
+          <CodeBlock code={MCP_TSX} filename=".cursor/mcp.json · variante tsx" language="json" />
+          <p className="text-[1.15rem] text-muted">Variante sans build. Elle n'a pas servi au test Inspector.</p>
+        </Stack>
+      </Pair>
     </Stack>,
   ),
   slide(
@@ -504,6 +567,12 @@ export const slides: Slide[] = [
         ]}
       />
     </Stack>,
+  ),
+  divider(
+    "Suite",
+    "04",
+    "Dépanner, puis aller plus loin",
+    "Les erreurs fréquentes, et des défis pour continuer après l'atelier.",
   ),
   slide(
     "Suite",
@@ -547,15 +616,22 @@ export const slides: Slide[] = [
       ]}
     />,
   ),
-  slide(
-    "Clôture",
-    "Merci — à vous les questions",
-    <Stack>
-      <p className="max-w-4xl text-[1.5rem] leading-snug md:text-[2rem]">
-        Vous avez un serveur qui parle à Cursor, et une météo de Lomé qui ne sort pas de la tête du modèle.
-      </p>
-      <p className="font-display text-[1.4rem]">Chaminade Adjolou (Donchaminade)</p>
-      <Note>Le code montré est celui de example-server/. npm test et l'Inspector 2.11.0 l'ont appelé pour de vrai.</Note>
-    </Stack>,
-  ),
+  {
+    section: "Clôture",
+    title: "Merci — à vous les questions",
+    layout: "closing",
+    content: (
+      <Stack>
+        <p className="max-w-3xl text-[1.3rem] leading-snug md:text-[clamp(1.4rem,1.8vw,2.1rem)]">
+          Vous avez un serveur qui parle à Cursor, et une météo de Lomé qui ne sort pas de la tête du modèle.
+        </p>
+        <p className="font-display text-[1.35rem] md:text-[1.6rem]">
+          Chaminade Adjolou <span className="text-accent">(Donchaminade)</span>
+        </p>
+        <p className="max-w-3xl text-[1.05rem] text-muted md:text-[1.2rem]">
+          Le code montré est celui de example-server/. npm test et l'Inspector 2.11.0 l'ont appelé pour de vrai.
+        </p>
+      </Stack>
+    ),
+  },
 ];

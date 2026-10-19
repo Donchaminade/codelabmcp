@@ -9,6 +9,8 @@
   --muted: #c5ced8;
   --accent: #f5b942;
   --accent-ink: #1c1404;
+  --accent-2: #2bb3a3;
+  --accent-3: #ef6a5b;
   --line: #3a4856;
   --code: #0d1117;
   color-scheme: dark;
@@ -22,6 +24,8 @@
   --muted: #3d4b59;
   --accent: #0f6e56;
   --accent-ink: #ffffff;
+  --accent-2: #e09a1a;
+  --accent-3: #d4553f;
   --line: #c3ced6;
   --code: #f6f8fa;
   color-scheme: light;
@@ -35,6 +39,8 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
   --color-line: var(--line);
   --color-code: var(--code);
   --font-sans: "Work Sans", ui-sans-serif, sans-serif;

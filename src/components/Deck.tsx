@@ -2,6 +2,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useState } from "react";
 import { slides } from "../slides/deck";
 import { useTheme } from "../theme";
+import { SlideView } from "./SlideView";
 
 function readHash() {
   const raw = window.location.hash.replace(/^#\/?/, "");
@@ -148,8 +149,11 @@ export function Deck() {
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-bg text-ink">
-      <header className="flex shrink-0 flex-wrap items-center gap-2 border-b border-line px-3 py-2 md:px-5">
-        <p className="font-display text-[18px]">Codelab MCP · Lomé</p>
+      <header className="flex shrink-0 flex-wrap items-center gap-2 border-b border-line bg-surface px-3 py-2 md:px-5">
+        <p className="flex items-center gap-2 font-display text-[18px]">
+          <span className="inline-block h-4 w-4 bg-accent" aria-hidden />
+          Codelab MCP · Lomé
+        </p>
         <p className="hidden text-[18px] text-muted md:block">{slide.section}</p>
         <p className="ml-auto font-mono text-[18px]">
           {index + 1} / {slides.length}
@@ -199,23 +203,14 @@ export function Deck() {
         <AnimatePresence mode="wait" initial={false}>
           <motion.article
             key={index}
-            className="absolute inset-0 overflow-y-auto px-4 py-5 md:px-10 md:py-8"
-            initial={reduce ? false : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? { opacity: 1 } : { opacity: 0, y: -8 }}
-            transition={reduce ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }}
+            className="absolute inset-0 overflow-x-hidden overflow-y-auto"
+            initial={reduce ? false : { opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={reduce ? { opacity: 1 } : { opacity: 0, x: -16 }}
+            transition={reduce ? { duration: 0 } : { duration: 0.22, ease: "easeOut" }}
             aria-labelledby="slide-title"
           >
-            <p className="font-display text-[18px] tracking-wide text-accent uppercase">
-              {slide.section}
-            </p>
-            <h2
-              id="slide-title"
-              className="mt-2 max-w-6xl font-display text-[2rem] leading-tight md:text-[3.1rem]"
-            >
-              {slide.title}
-            </h2>
-            <div className="mt-6">{slide.content}</div>
+            <SlideView slide={slide} index={index} total={slides.length} />
           </motion.article>
         </AnimatePresence>
       </div>

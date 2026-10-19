@@ -5,3 +5,4 @@ dist/
 .vercel
 example-server/node_modules/
 example-server/build/
+.netlify/
