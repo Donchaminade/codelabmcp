@@ -1,0 +1,28 @@
+{
+  "name": "meteo-lome-mcp",
+  "version": "1.0.0",
+  "description": "Serveur MCP : météo actuelle et risque de pluie à Lomé, via Open-Meteo.",
+  "type": "module",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/index.js",
+    "dev": "tsx src/index.ts",
+    "test": "tsx scripts/appel-outils.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": ["mcp", "lome", "meteo", "open-meteo"],
+  "author": "Chaminade Adjolou",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

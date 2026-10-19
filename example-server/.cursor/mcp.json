@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "meteo-lome": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${workspaceFolder}/build/index.js"]
+    }
+  }
+}
