@@ -11,7 +11,7 @@ type Props = {
 export function CodeBlock({ code, filename, language = "typescript" }: Props) {
   const { theme } = useTheme();
   const [html, setHtml] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState<"idle" | "copied" | "failed">("idle");
   const source = code.replace(/\n$/, "");
 
   useEffect(() => {
@@ -33,14 +33,45 @@ export function CodeBlock({ code, filename, language = "typescript" }: Props) {
     };
   }, [source, language, theme]);
 
-  async function copy() {
+  function copyWithSelection(text: string) {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.top = "0";
+    area.style.left = "0";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+    area.setSelectionRange(0, text.length);
+    let ok = false;
     try {
-      await navigator.clipboard.writeText(source);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
+      ok = document.execCommand("copy");
     } catch {
-      setCopied(false);
+      ok = false;
     }
+    area.remove();
+    return ok;
+  }
+
+  function copy() {
+    const mark = (next: "copied" | "failed") => {
+      setStatus(next);
+      window.setTimeout(() => setStatus("idle"), 2500);
+    };
+    if (copyWithSelection(source)) {
+      mark("copied");
+      return;
+    }
+    if (!navigator.clipboard) {
+      mark("failed");
+      return;
+    }
+    void navigator.clipboard.writeText(source).then(
+      () => mark("copied"),
+      () => mark("failed"),
+    );
   }
 
   return (
@@ -51,12 +82,11 @@ export function CodeBlock({ code, filename, language = "typescript" }: Props) {
         </span>
         <button
           type="button"
-          onClick={() => {
-            void copy();
-          }}
+          onClick={copy}
+          aria-live="polite"
           className="shrink-0 bg-accent px-3 py-2 font-display text-[18px] text-accent-ink"
         >
-          {copied ? "Copié" : "Copier"}
+          {status === "copied" ? "Copié" : status === "failed" ? "Échec" : "Copier"}
         </button>
       </figcaption>
       <div className="code-scroll max-h-[58vh] overflow-auto p-4">
