@@ -75,8 +75,11 @@ export function CodeBlock({ code, filename, language = "typescript" }: Props) {
   }
 
   return (
-    <figure className="flex min-h-0 flex-col border border-line bg-code">
+    <figure className="flex min-h-0 min-w-0 flex-col border border-line border-l-[6px] border-l-accent bg-code">
       <figcaption className="flex items-center gap-3 border-b border-line bg-surface px-3 py-2">
+        <span className="shrink-0 bg-accent-2 px-2 py-1 font-display text-[15px] font-bold text-accent-ink uppercase">
+          À copier
+        </span>
         <span className="min-w-0 flex-1 truncate font-mono text-[18px] text-ink">
           {filename}
         </span>
@@ -97,6 +100,35 @@ export function CodeBlock({ code, filename, language = "typescript" }: Props) {
             <code>{source}</code>
           </pre>
         )}
+      </div>
+    </figure>
+  );
+}
+
+type OutputProps = {
+  code: string;
+  label: string;
+  kind?: "result" | "example";
+};
+
+export function OutputBlock({ code, label, kind = "result" }: OutputProps) {
+  const badge = kind === "result" ? "Résultat attendu" : "Exemple à lire";
+  return (
+    <figure
+      className="flex min-h-0 min-w-0 flex-col border-2 border-dashed border-line bg-surface select-none"
+      aria-label={`${badge} : ${label}. Ne pas copier.`}
+    >
+      <figcaption className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b-2 border-dashed border-line px-3 py-2">
+        <span className="shrink-0 border-2 border-muted px-2 py-0.5 font-display text-[15px] font-bold text-muted uppercase">
+          {badge}
+        </span>
+        <span className="min-w-0 flex-1 truncate font-mono text-[17px] text-muted">{label}</span>
+        <span className="shrink-0 font-display text-[15px] text-muted">ne pas copier</span>
+      </figcaption>
+      <div className="code-scroll max-h-[58vh] overflow-auto p-4">
+        <pre className="m-0 font-mono text-[18px] leading-relaxed whitespace-pre text-muted lg:text-[19px]">
+          <code>{code.replace(/\n$/, "")}</code>
+        </pre>
       </div>
     </figure>
   );
