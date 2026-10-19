@@ -713,6 +713,7 @@ export const slides: Slide[] = [
         <OutputBlock code={OUT_CHECK} label="sur la machine de test, 19 octobre 2026" />
       </Pair>
       <Terms
+        columns={3}
         items={[
           ["node -v", "Affiche la version de Node.js (v pour version). Il faut 20 ou plus : v20, v22…"],
           ["npm -v", "Affiche la version de npm. Elle est installée avec Node, n'importe laquelle récente convient."],
@@ -730,6 +731,7 @@ export const slides: Slide[] = [
         <OutputBlock code="(aucun message)" label="c'est normal" />
       </Pair>
       <Terms
+        columns={3}
         items={[
           ["mkdir example-server", "make directory : crée un dossier nommé example-server, là où se trouve le terminal."],
           ["cd example-server", "change directory : entre dans ce dossier. Toutes les commandes suivantes s'y exécutent."],
@@ -747,6 +749,7 @@ export const slides: Slide[] = [
         <OutputBlock code={OUT_NPM_INIT} label="le chemin dépend de ta machine" />
       </Pair>
       <Terms
+        columns={3}
         items={[
           ["npm init", "Crée le fichier package.json : la carte d'identité du projet (nom, version, scripts, dépendances)."],
           ["-y", "yes : accepte toutes les réponses par défaut au lieu de poser des questions."],
@@ -764,6 +767,7 @@ export const slides: Slide[] = [
         <OutputBlock code={OUT_NPM_I} label="le nombre de paquets peut varier" />
       </Pair>
       <Terms
+        columns={3}
         items={[
           ["npm i", "Abréviation de npm install : télécharge des paquets depuis npmjs.com."],
           ["@modelcontextprotocol/sdk", "Le SDK officiel de MCP pour TypeScript. Le @ indique un paquet rangé sous une organisation."],
@@ -782,6 +786,7 @@ export const slides: Slide[] = [
         <OutputBlock code={OUT_NPM_I_DEV} label="npm peut ajouter des lignes « funding »" />
       </Pair>
       <Terms
+        columns={3}
         items={[
           ["-D", "Abréviation de --save-dev : ces paquets servent à écrire et compiler le code, pas à le faire tourner. Ils vont dans devDependencies."],
           ["typescript", "Le compilateur tsc."],
@@ -800,6 +805,7 @@ export const slides: Slide[] = [
         <OutputBlock code={OUT_LS} label="versions du 19 octobre 2026" />
       </Pair>
       <Terms
+        columns={3}
         items={[
           ["npm ls", "list : affiche les paquets installés dans le projet."],
           ["--depth=0", "Seulement les paquets qu'on a demandés, pas leurs propres dépendances."],
@@ -1069,6 +1075,7 @@ export const slides: Slide[] = [
         <OutputBlock code={OUT_BUILD} label="aucune erreur = réussite" />
       </Pair>
       <Terms
+        columns={3}
         items={[
           ["npm run build", "Lance le script build de package.json, c'est-à-dire tsc."],
           ["> tsc", "npm affiche la commande qu'il exécute. Pas d'autre ligne : la compilation a réussi."],
@@ -1087,6 +1094,7 @@ export const slides: Slide[] = [
         <OutputBlock code={`> meteo-lome-mcp@1.0.0 start\n> node build/index.js\n\n${OUT_START}`} label="le curseur reste bloqué : c'est normal" />
       </Pair>
       <Terms
+        columns={3}
         items={[
           ["npm start", "Lance le script start : node build/index.js."],
           ["« prêt (stdio) »", "Le message du morceau 11, écrit sur stderr. Le serveur attend maintenant des demandes JSON sur stdin."],

@@ -4,7 +4,9 @@ Site de présentation pour un workshop d'environ deux heures : **« Crée ton pr
 
 Animé par Chaminade Adjolou (Donchaminade), pour une communauté tech de Lomé, débutants inclus.
 
-Le site est une suite de slides plein écran. Le serveur montré dans les slides est le dossier [`example-server/`](example-server/). Les blocs de code lisent ces fichiers : ils ne sont pas recopiés à la main.
+Le site est une suite de slides plein écran. Le serveur montré dans les slides est le dossier [`example-server/`](example-server/). Les blocs de code lisent ces fichiers : ils ne sont pas recopiés à la main. `src/index.ts` est découpé en 11 morceaux expliqués (`src/slides/excerpts.ts`), qui reconstituent exactement le fichier.
+
+Deux sortes de blocs : « À copier », avec un bouton Copier, pour ce qu'on tape ; « Résultat attendu » ou « Exemple à lire », en pointillés, sans bouton et non sélectionnable, pour ce qu'on doit voir.
 
 ## Lancer en local
 

@@ -85,11 +85,12 @@ export function Terms({
   mono = true,
 }: {
   items: [string, ReactNode][];
-  columns?: 1 | 2;
+  columns?: 1 | 2 | 3;
   mono?: boolean;
 }) {
+  const grid = columns === 3 ? "lg:grid-cols-2 xl:grid-cols-3" : columns === 2 ? "lg:grid-cols-2" : "";
   return (
-    <dl className={`grid min-w-0 gap-3 ${columns === 2 ? "lg:grid-cols-2" : ""}`}>
+    <dl className={`grid min-w-0 gap-3 ${grid}`}>
       {items.map(([term, explanation]) => (
         <div key={term} className="min-w-0 border border-line bg-surface p-4">
           <dt

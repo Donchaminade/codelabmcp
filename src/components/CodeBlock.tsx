@@ -122,7 +122,9 @@ export function OutputBlock({ code, label, kind = "result" }: OutputProps) {
         <span className="shrink-0 border-2 border-muted px-2 py-0.5 font-display text-[15px] font-bold text-muted uppercase">
           {badge}
         </span>
-        <span className="min-w-0 flex-1 truncate font-mono text-[17px] text-muted">{label}</span>
+        <span className="order-last basis-full font-mono text-[17px] break-words text-muted sm:order-none sm:basis-0 sm:flex-1">
+          {label}
+        </span>
         <span className="shrink-0 font-display text-[15px] text-muted">ne pas copier</span>
       </figcaption>
       <div className="code-scroll max-h-[58vh] overflow-auto p-4">
