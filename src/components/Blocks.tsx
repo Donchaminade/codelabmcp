@@ -79,6 +79,36 @@ export function Note({ children }: { children: ReactNode }) {
   );
 }
 
+export function Terms({
+  items,
+  columns = 1,
+  mono = true,
+}: {
+  items: [string, ReactNode][];
+  columns?: 1 | 2 | 3;
+  mono?: boolean;
+}) {
+  const grid = columns === 3 ? "lg:grid-cols-2 xl:grid-cols-3" : columns === 2 ? "lg:grid-cols-2" : "";
+  return (
+    <dl className={`grid min-w-0 gap-3 ${grid}`}>
+      {items.map(([term, explanation]) => (
+        <div key={term} className="min-w-0 border border-line bg-surface p-4">
+          <dt
+            className={`w-fit max-w-full bg-surface-2 px-2 py-1 break-words text-accent ${
+              mono ? "font-mono text-[18px]" : "font-display text-[1.2rem] font-bold md:text-[1.35rem]"
+            }`}
+          >
+            {term}
+          </dt>
+          <dd className="mt-2 text-[1.1rem] leading-snug md:text-[clamp(1.1rem,1.25vw,1.4rem)]">
+            {explanation}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 export function Stack({ children }: { children: ReactNode }) {
   return <div className="flex min-w-0 flex-col gap-4 md:gap-5">{children}</div>;
 }
